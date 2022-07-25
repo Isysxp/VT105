@@ -14,3 +14,17 @@ The build environment is Visual Studio.
 The app may be used to communicate via a COMM port or via telnet.
 Overall, the emulation is 'adequate' for playing with the MINC graphic extensions to the BASIC language.
 
+Here is some example code for testing:
+
+
+10 DIM X1(199),F1(10),Y1(199)
+20 FOR I=0 TO 199
+25 D1=25/(ABS(I-100)+1)
+30 Y1(I)=SIN(I*PI/20)
+40 Y1(I)=Y1(I)*D1
+50 X1(I)=LOG10(I+1)
+60 NEXT I
+70 GRAPH("exact,shade,lines,vlines",,,Y1(0),1,0)
+75 LABEL("BOLD","TEST GRAPH")
+80 END
+
