@@ -34,10 +34,18 @@ namespace VT105
                 //{
                 //    Interaction.MsgBox("Usage: VT105 <host> <port>", MsgBoxStyle.Exclamation, "VT105");
                 //    Environment.Exit(0);
-                //} 
+                //}
+
                 // Swap these next 2 lines to use a comm port or telnet (to be tidied up)!
                 var tc = new TelnetConnection(arguments[1], int.Parse(arguments[2]));
                 // var tc = new CommPort(arguments[1]);
+
+                // tc.Login("username", "password", 100);
+                // For telnet, you can use this line as well for a totally insecure experiance!
+                // NB if you leave this line out, input to the host login/username prompts will not echo.
+
+                // In the CommPort case, arguments[1] is the name of a comm port.
+
 
                 while (tc.IsConnected)
                 {
