@@ -38,8 +38,9 @@ namespace VT105.MinimalisticTelnet
         public string Login(string Username, string Password, int LoginTimeOutMs)
         {
             int oldTimeOutMs = TimeOutMs;
+            string s="";
             TimeOutMs = LoginTimeOutMs;
-            string s = Read();
+            s = Read();
             if (!s.TrimEnd().EndsWith(":"))
                 throw new Exception("Failed to connect : no login prompt");
             WriteLine(Username);
@@ -83,7 +84,7 @@ namespace VT105.MinimalisticTelnet
             {
                 ParseTelnet(sb);
                 System.Threading.Thread.Sleep(TimeOutMs);
-                VT105.UpdateDisplay();                             // Added by ISS. Update console window every 0.1 Sec as the console handler also updates this window in realtime.
+                VT105.UpdateDisplay();                             // Added by ISS. Update console window every 0.01 Sec as the console handler also updates this window in realtime.
             }
             while (tcpSocket.Available > 0);
 
@@ -98,68 +99,46 @@ namespace VT105.MinimalisticTelnet
             }
         }
 
-        private void ParseTelnet(StringBuilder sb)
+        void ParseTelnet(StringBuilder sb)
         {
             while (tcpSocket.Available > 0)
             {
                 int input = tcpSocket.GetStream().ReadByte();
-
                 switch (input)
                 {
                     case -1:
-                        {
-                            break;
-                        }
+                        break;
                     case (int)Verbs.IAC:
+                        // interpret as command
+                        int inputverb = tcpSocket.GetStream().ReadByte();
+                        if (inputverb == -1) break;
+                        switch (inputverb)
                         {
-                            int inputverb = tcpSocket.GetStream().ReadByte();
-                            if (inputverb == -1)
+                            case (int)Verbs.IAC:
+                                //literal IAC = 255 escaped, so append char 255 to string
+                                sb.Append(inputverb);
                                 break;
-
-                            switch (inputverb)
-                            {
-                                case (int)Verbs.IAC:
-                                    {
-                                        sb.Append(inputverb);
-                                        break;
-                                    }
-                                case (int)Verbs.DO:
-                                case (int)Verbs.DONT:
-                                case (int)Verbs.WILL:
-                                case (int)Verbs.WONT:
-                                    {
-                                        int inputoption = tcpSocket.GetStream().ReadByte();
-                                        if (inputoption == -1)
-                                            break;
-                                        tcpSocket.GetStream().WriteByte((byte)Verbs.IAC);
-
-                                        if (inputoption == (int)Options.SGA)
-                                        {
-                                            tcpSocket.GetStream().WriteByte(inputverb == (int)Verbs.DO ? (byte)Verbs.WILL : (byte)Verbs.DO);
-                                        }
-                                        else
-                                        {
-                                            tcpSocket.GetStream().WriteByte(inputverb == (int)Verbs.DO ? (byte)Verbs.WONT : (byte)Verbs.DONT);
-                                        }
-
-                                        tcpSocket.GetStream().WriteByte((byte)inputoption);
-                                        break;
-                                    }
-
-                                default:
-                                    {
-                                        break;
-                                    }
-                            }
-
-                            break;
+                            case (int)Verbs.DO:
+                            case (int)Verbs.DONT:
+                            case (int)Verbs.WILL:
+                            case (int)Verbs.WONT:
+                                // reply to all commands with "WONT", unless it is SGA (suppres go ahead)
+                                int inputoption = tcpSocket.GetStream().ReadByte();
+                                if (inputoption == -1) break;
+                                tcpSocket.GetStream().WriteByte((byte)Verbs.IAC);
+                                if (inputoption == (int)Options.SGA)
+                                    tcpSocket.GetStream().WriteByte(inputverb == (int)Verbs.DO ? (byte)Verbs.WILL : (byte)Verbs.DO);
+                                else
+                                    tcpSocket.GetStream().WriteByte(inputverb == (int)Verbs.DO ? (byte)Verbs.WONT : (byte)Verbs.DONT);
+                                tcpSocket.GetStream().WriteByte((byte)inputoption);
+                                break;
+                            default:
+                                break;
                         }
-
+                        break;
                     default:
-                        {
-                            sb.Append(input);
-                            break;
-                        }
+                        sb.Append((char)input);
+                        break;
                 }
             }
         }

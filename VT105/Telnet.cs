@@ -35,9 +35,9 @@ namespace VT105
                 //    Interaction.MsgBox("Usage: VT105 <host> <port>", MsgBoxStyle.Exclamation, "VT105");
                 //    Environment.Exit(0);
                 //} 
-
-                // Dim tc As TelnetConnection = New TelnetConnection(arguments(1), arguments(2))
-                var tc = new CommPort(arguments[1]);
+                // Swap these next 2 lines to use a comm port or telnet (to be tidied up)!
+                var tc = new TelnetConnection(arguments[1], int.Parse(arguments[2]));
+                // var tc = new CommPort(arguments[1]);
 
                 while (tc.IsConnected)
                 {
