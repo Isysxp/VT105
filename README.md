@@ -12,6 +12,8 @@ was to simplify the basic VT100 functionality which is conveniently available in
 overlays the console bitmap.
 The build environment is Visual Studio.
 The app may be used to communicate via a COMM port or via telnet.
+The telnet clinet code is from: https://www.codeproject.com/Articles/19071/Quick-tool-A-minimalistic-Telnet-library
+See telnet.cs to swap interfaces.
 Overall, the emulation is 'adequate' for playing with the MINC graphic extensions to the BASIC language.
 
 Here is some example code for testing:
