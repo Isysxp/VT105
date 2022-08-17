@@ -1,7 +1,7 @@
 # VT105
 A very basic VT105 emulation
 
-  This is an initial build of a VT105 terminal emulator. I must emphasise that the is work in progress.
+  This is an initial build of a VT105 terminal emulator. I must emphasise that this is work in progress.
 The intention behind this project is to create a terminal app that may be used with the MINC-11 system.
 To read a little more about this remarkable system, I suggest you start with Sytse van Slooten's pages
 at: https://pdp2011.sytse.net/wordpress/pdp-11/minc/ as he has done a lot of work in this area to
@@ -10,9 +10,9 @@ reimplement the MINC system and a VT105 terminal using an FPGA.
 was to simplify the basic VT100 functionality which is conveniently available in the Windows console.
   The VT105 graphics have been added to the console window via an additional transparent bitmap that 
 overlays the console bitmap.
-The build environment is Visual Studio.
+The build environment is Visual Studio >=2019.
 The app may be used to communicate via a COMM port or via telnet.
-The telnet clinet code is from: https://www.codeproject.com/Articles/19071/Quick-tool-A-minimalistic-Telnet-library
+The telnet client code is from: https://www.codeproject.com/Articles/19071/Quick-tool-A-minimalistic-Telnet-library
 See telnet.cs to swap interfaces.
 Overall, the emulation is 'adequate' for playing with the MINC graphic extensions to the BASIC language.
 
