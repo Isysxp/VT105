@@ -181,6 +181,8 @@ namespace VT105
             int I;
             int Tm;
 
+            UpdateDisplay();
+
             if (Strings.Len(Str) == 0)
                 return;
 
@@ -191,13 +193,17 @@ namespace VT105
                 if (Tm > 0)
                     SendChar(Tm);
             }
-
         }
 
         public static void UpdateDisplay()
         {
+            Updt += 1;
+            if (Updt > 20)
+            {
+                GrWin.DrawImage(Bmp, 0, 0);              // Add our graphics to the console window, bmp background is transparent so the console data is still visible.
+                Updt = 0;
+            }
 
-            GrWin.DrawImage(Bmp, 0, 0);              // Add our graphics to the console window, bmp background is transparent so the console data is still visible.
 
         }
 
@@ -232,14 +238,8 @@ namespace VT105
             int Yval;
             int Xval;
 
-            Debug.Print(Val.ToString() + ":" + Strings.Chr(Val));
-            Updt += 1;
-            if (Updt == 100)
-            {
-                UpdateDisplay();
-                Updt = 0;
-            }
-
+            // Debug.Print(Val.ToString() + ":" + Strings.Chr(Val));
+            UpdateDisplay();
             if (ArgCnt > 0)
             {
                 ArgBuf[ArgCnt] = Val;

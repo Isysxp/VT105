@@ -78,7 +78,7 @@ namespace VT105
             Dsync += 1;
             if (Dsync > 1)
             {
-                VT105.UpdateDisplay();
+                //VT105.UpdateDisplay();
                 Dsync = 0;
             }
             return sb;

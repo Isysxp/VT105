@@ -22,12 +22,6 @@ namespace VT105
                 int CKey;
 
                 VT105.InitTerminal();
-
-                while (false)
-                {
-                    System.Threading.Thread.Sleep(20);
-                    VT105.UpdateDisplay();
-                }
                 var arguments = Environment.GetCommandLineArgs();
 
                 //if (arguments.Length != 3)
@@ -37,8 +31,8 @@ namespace VT105
                 //}
 
                 // Swap these next 2 lines to use a comm port or telnet (to be tidied up)!
-                var tc = new TelnetConnection(arguments[1], int.Parse(arguments[2]));
-                // var tc = new CommPort(arguments[1]);
+                // var tc = new TelnetConnection(arguments[1], int.Parse(arguments[2]));
+                var tc = new CommPort(arguments[1]);
 
                 // tc.Login("username", "password", 100);
                 // For telnet, you can use this line as well for a totally insecure experiance!
