@@ -200,7 +200,7 @@ namespace VT105
             Updt += 1;
             if (Updt > 20)
             {
-                GrWin.DrawImage(Bmp, 0, 0);              // Add our graphics to the console window, bmp background is transparent so the console data is still visible.
+                GrWin.DrawImage(Bmp, 0, 0);
                 Updt = 0;
             }
 
@@ -239,7 +239,7 @@ namespace VT105
             int Xval;
 
             // Debug.Print(Val.ToString() + ":" + Strings.Chr(Val));
-            UpdateDisplay();
+            Updt = 18;
             if (ArgCnt > 0)
             {
                 ArgBuf[ArgCnt] = Val;
@@ -272,6 +272,7 @@ namespace VT105
                             Val = ArgBuf[2] & 16;
                             if (Conversions.ToBoolean(Val))
                             {
+                                System.Threading.Thread.Sleep(100);
                                 Gr.Dispose();
                                 Bmp.Dispose();
                                 InitGraphics();
@@ -504,7 +505,7 @@ namespace VT105
             }
             else
             {
-                Console.Write(Strings.Chr(Chrx));
+                 Console.Write(Strings.Chr(Chrx));
             }
 
 
