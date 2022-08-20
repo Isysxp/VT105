@@ -239,7 +239,7 @@ namespace VT105
             int Xval;
 
             // Debug.Print(Val.ToString() + ":" + Strings.Chr(Val));
-            Updt = 18;
+            // Updt = 18;
             if (ArgCnt > 0)
             {
                 ArgBuf[ArgCnt] = Val;
@@ -251,6 +251,7 @@ namespace VT105
                 if (ArgCnt > 0)
                     return;
             }
+            Updt += 10;                     // Speed up refresh.
 
             if (ArgCnt == 0)
             {
