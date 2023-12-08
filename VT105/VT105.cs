@@ -30,8 +30,10 @@ namespace VT105
         private const int MERGEPAINT = 0xBB0226;
         private const int SRCCOPY = 0xCC0020;
         private const int Lmargin = 105;         // Centre of char 8 with font @ 14px wide.
-        private const int Rmargin = 107;          // Centre of char 74 from Right margin of screen
+        private const int Rmargin = 90;          // Centre of char 74 from Right margin of screen
         private const double XScale = 1.8d;
+        private const float BmpWidth = 1120.0F;
+        private const float BmpHeight = 574.0F;
 
         [DllImport("kernel32")]
         static extern int SetConsoleMode(long hConsoleHandle, long dwMode);
@@ -163,6 +165,7 @@ namespace VT105
             Bmp = Image.FromHbitmap(HBmp);
             Bmp.MakeTransparent();
             Gr = Graphics.FromImage(Bmp);
+            Gr.ScaleTransform(Bmp.Width / BmpWidth, Bmp.Height / BmpHeight);
             Wpen = new Pen(Color.White, 2f);
             DashPen = new Pen(Color.White, 2f);
             BlPen = new Pen(Color.Black, 2f);
@@ -262,6 +265,7 @@ namespace VT105
                             VT_Cr0 = ArgBuf[2] | ArgBuf[1] << 8;
                             if ((VT_Cr0 & 7) == 0)
                             {
+                                GrWin.Clear(Color.Transparent);
                                 Gr.Clear(Color.Transparent);
                             }
 
@@ -273,6 +277,9 @@ namespace VT105
                             Val = ArgBuf[2] & 16;
                             if (Conversions.ToBoolean(Val))
                             {
+                                GrWin.Clear(Color.Transparent);
+                                Gr.Clear(Color.Transparent);
+                                break;
                                 System.Threading.Thread.Sleep(100);
                                 Gr.Dispose();
                                 Bmp.Dispose();
@@ -287,7 +294,7 @@ namespace VT105
                             Val = ArgBuf[1] & 16;
                             if (Conversions.ToBoolean(Val))
                             {
-                                Gr.DrawLine(Wpen, Lmargin, (int)Math.Round((240 - Hline) * 2.4d), Bmp.Width - Rmargin, (int)Math.Round((240 - Hline) * 2.4d));
+                                Gr.DrawLine(Wpen, Lmargin, (int)Math.Round((240 - Hline) * 2.4d), BmpWidth - Rmargin, (int)Math.Round((240 - Hline) * 2.4d));
                             }
 
                             break;

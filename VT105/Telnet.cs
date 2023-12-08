@@ -32,7 +32,7 @@ namespace VT105
 
                 // Swap these next 2 lines to use a comm port or telnet (to be tidied up)!
                 //var tc = new TelnetConnection(arguments[1], int.Parse(arguments[2]));
-                var tc = new CommPort(arguments[1]);
+                var tc = new CommPort("COM5");
 
                 // tc.Login("username", "password", 100);
                 // For telnet, you can use this line as well for a totally insecure experiance!
