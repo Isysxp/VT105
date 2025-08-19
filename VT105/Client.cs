@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualBasic;
 
@@ -30,9 +31,27 @@ namespace VT105.MinimalisticTelnet
         private TcpClient tcpSocket;
         private int TimeOutMs = 10;
 
+        public void NoKeep(TcpClient tcl)
+        {
+            const uint on = 0;
+            const uint time = 2000;
+            const uint interval = 2000;
+
+            byte[] inOptionValues = new byte[Marshal.SizeOf(on) * 3];
+
+            BitConverter.GetBytes(on).CopyTo(inOptionValues, 0);
+            BitConverter.GetBytes(time).CopyTo(inOptionValues, Marshal.SizeOf(on));
+            BitConverter.GetBytes(interval).CopyTo(inOptionValues, Marshal.SizeOf(on) * 2);
+
+            tcl.Client.IOControl(IOControlCode.KeepAliveValues, inOptionValues, null);
+        }
         public TelnetConnection(string Hostname, int Port)
         {
-            tcpSocket = new TcpClient(Hostname, Port);
+            tcpSocket = new TcpClient();
+            //Socket s = tcpSocket.Client;
+            //s.SetSocketOption(SocketOptionLevel.Socket , SocketOptionName.KeepAlive, false);
+            NoKeep(tcpSocket);
+            tcpSocket.Connect(Hostname, Port);
         }
 
         public string Login(string Username, string Password, int LoginTimeOutMs)

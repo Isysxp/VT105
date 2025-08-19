@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO.Ports;
 using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -83,6 +84,7 @@ namespace VT105
         private static int[] GFlg1 = new int[513];
         private static int[] VFlg = new int[513];
         private static int Updt;
+        private static SerialPort CPort;
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct COORD
@@ -152,7 +154,10 @@ namespace VT105
             Ndx = 0;
             // Console.Write(Chr(27) & "=")
             Console.Write('\u001b' + "[?1h");
-
+            //CPort = new SerialPort("COM24");
+            //CPort.RtsEnable = true;
+            //CPort.DtrEnable = true;
+            //CPort.Open();   
         }
 
         private static void InitGraphics()
@@ -183,6 +188,7 @@ namespace VT105
         {
             int I;
             int Tm;
+            Byte[] Cbt=new byte[8];
 
             UpdateDisplay();
 
@@ -195,6 +201,9 @@ namespace VT105
                 Tm = Strings.Asc(Str[I]);
                 if (Tm > 0)
                     SendChar(Tm);
+                Cbt[0] = (byte)Tm;
+//                if (Tm > 0)
+ //                   CPort.Write(Cbt, 0, 1);
             }
         }
 
